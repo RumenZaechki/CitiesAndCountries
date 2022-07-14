@@ -1,0 +1,45 @@
+﻿@model CountryViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container" style="text-align:center">
+    <h2>@Model.Name</h2>
+
+    <div class="row" style="width:20rem; margin: auto;">
+        <img src="@Model.ImageUrl" style="margin-left:auto; margin-right:auto;" />
+    </div>
+
+    <div class="row">
+        <h5 class="font-weight-light mb-1"><b class="font-weight-bold"></b> <i>Population: @Model.Population</i></h5>
+    </div>
+
+    <hr class="mt-2 mb-3" style="height:3px;border:none;" />
+    <div class="font-weight-light">
+        <h4 class="text-left font-weight-bold" style="font-size:large">Cities:</h4>
+
+        @if (Model.Cities.Count > 0)
+        {
+            <div class="list-group">
+                @foreach (var city in Model.Cities)
+                {
+                    <a asp-controller="Cities" asp-action="Details" asp-route-id="@city.Id" class="font-weight-light">@city.Name</a>
+                }
+            </div>
+        }
+        @if(Model.Cities.Count == 0)
+        {
+            <h5>No cities as of yet.</h5>
+        }
+
+        <hr class="mb-2" style="height:3px;border:none;" />
+    </div>
+
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Countries" asp-action="AssignCity" asp-route-Id="@Model.Id" class="btn btn-primary">Add a city to @Model.Name</a>
+        <a asp-area="" asp-controller="Countries" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-area="" asp-controller="Countries" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    }
+</div>
